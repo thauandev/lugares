@@ -4,11 +4,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { uuid } from 'uuidv4';
-import Modal from 'react-modal';
 
 import Select from '../../components/Select';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
+import Modal from '../../components/Modal';
 
 import api from '../../services/api';
 
@@ -103,22 +103,20 @@ const Home: React.FC = () => {
 
   function handleEdit(data: any, i: any) {
     const { local, date } = data;
-    console.log(i);
-    const deleteMeta = meta.filter(m => m.id !== i);
 
-    meta.map(m => {
-      if (m.id === i) {
-        const result = {
-          ...m,
-          i,
-          local,
-          date,
-        };
+    setMeta(oldState =>
+      oldState.map(meta => {
+        if (meta.id === i) {
+          return {
+            ...meta,
+            local,
+            date,
+          };
+        }
 
-        return setMeta([...deleteMeta, result]);
-      }
-      return m;
-    });
+        return meta;
+      }),
+    );
   }
 
   function openModal() {
@@ -167,24 +165,26 @@ const Home: React.FC = () => {
                 <button type="button" onClick={openModal}>
                   <img src={Edit} alt="" />
                 </button>
-                <Modal
-                  isOpen={modalIsOpen}
-                  onRequestClose={closeModal}
-                  style={customStyles}
-                >
-                  <Form onSubmit={event => handleEdit(event, m.id)}>
-                    <Input
-                      name="local"
-                      placeholder="   Digite o local que deseja conhecer"
-                    />
-                    <Input name="date" placeholder="   mês/ano" />
+                <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+                  {meta.map(m => (
+                    <Form
+                      onSubmit={event => handleEdit(event, m.id)}
+                      key={m.id}
+                    >
+                      <Input
+                        name="local"
+                        placeholder="   Digite o local que deseja conhecer"
+                      />
+                      <Input name="date" placeholder="   mês/ano" />
 
-                    <Button type="submit">
-                      <span>Editar</span>
-                    </Button>
-                  </Form>
+                      <Button type="submit">
+                        <span>Editar</span>
+                      </Button>
+                    </Form>
+                  ))}
                   <button onClick={closeModal}>Fechar</button>
                 </Modal>
+
                 <button type="button" onClick={() => handleDelete(m.id)}>
                   <img src={Delete} alt="" />
                 </button>
