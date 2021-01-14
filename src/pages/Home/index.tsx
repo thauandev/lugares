@@ -29,18 +29,6 @@ interface Meta {
 const Home: React.FC = () => {
   const [countries, setCountries] = useState<Countries[]>([]);
   const [meta, setMeta] = useState<Meta[]>([]);
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
 
   useEffect(() => {
     async function loadCountries() {
@@ -105,14 +93,6 @@ const Home: React.FC = () => {
     );
   }
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
   return (
     <Container>
       <Header />
@@ -137,20 +117,16 @@ const Home: React.FC = () => {
           </Button>
         </InputContainer>
       </Form>
-
-      <Form onSubmit={event => handleEdit(event, m.id)} key={m.id}>
-        {meta.map(m => (
-          <MetaItem
-            isOpen={modalIsOpen}
-            openModal={openModal}
-            onRequestClose={closeModal}
-            flag={m.flag}
-            country={m.country}
-            local={m.local}
-            date={m.date}
-          />
-        ))}
-      </Form>
+      {meta.map(m => (
+        <MetaItem
+          flag={m.flag}
+          country={m.country}
+          local={m.local}
+          date={m.date}
+          toDelete={handleDelete(m.id)}
+          toEdit={(event: any) => handleEdit(event, m.id)}
+        />
+      ))}
     </Container>
   );
 };

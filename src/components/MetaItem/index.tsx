@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Modal from 'react-modal';
+import { Form } from '@unform/web';
 
 import Input from '../Input';
 
@@ -19,72 +20,80 @@ import {
 } from './styles';
 
 interface ModalProps {
-  isOpen: boolean;
-  // handleDelete: void;
-  onRequestClose: Function;
-  openModal: Function;
   flag: string;
   country: string;
   local: string;
   date: string;
+  toDelete: Function;
+  toEdit: Function;
 }
 
 const MetaItem: React.FC<ModalProps> = ({
-  isOpen,
-  // handleDelete,
-  onRequestClose,
-  openModal,
   flag,
   country,
   local,
   date,
+  toDelete,
+  toEdit,
 }) => {
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
     <ResultContainer>
-      <Card>
-        <ContainerCard>
-          <FlagCard>
-            <img src={flag} alt="Bandeira" />
+      <Form onSubmit={toEdit}>
+        <Card>
+          <ContainerCard>
+            <FlagCard>
+              <img src={flag} alt="Bandeira" />
 
-            <p>{country}</p>
-          </FlagCard>
-          <EditCard>
-            <button type="button" onClick={() => openModal}>
-              <img src={Edit} alt="" />
-            </button>
-            <Modal isOpen={isOpen}>
-              <Input
-                name="local"
-                placeholder="   Digite o local que deseja conhecer"
-              />
-              <Input name="date" placeholder="   mês/ano" />
-
-              <Button type="submit">
-                <span>Editar</span>
-              </Button>
-
-              <button type="button" onClick={() => onRequestClose}>
-                Fechar
+              <p>{country}</p>
+            </FlagCard>
+            <EditCard>
+              <button type="button" onClick={openModal}>
+                <img src={Edit} alt="Edição" />
               </button>
-            </Modal>
+              <Modal isOpen={modalIsOpen}>
+                <Input
+                  name="local"
+                  placeholder="   Digite o local que deseja conhecer"
+                />
+                <Input name="date" placeholder="   mês/ano" />
 
-            <button type="button">
-              <img src={Delete} alt="" />
-            </button>
-          </EditCard>
-        </ContainerCard>
+                <Button type="submit">
+                  <span>Editar</span>
+                </Button>
 
-        <LocalCard>
-          <hr />
-          <InfoCard>
-            <p>{`Local: ${local}`}</p>
-            <p>
-              {`Meta:
+                <button type="button" onClick={closeModal}>
+                  Fechar
+                </button>
+              </Modal>
+
+              <button type="button" onClick={toDelete}>
+                <img src={Delete} alt="" />
+              </button>
+            </EditCard>
+          </ContainerCard>
+
+          <LocalCard>
+            <hr />
+            <InfoCard>
+              <p>{`Local: ${local}`}</p>
+              <p>
+                {`Meta:
             ${date}`}
-            </p>
-          </InfoCard>
-        </LocalCard>
-      </Card>
+              </p>
+            </InfoCard>
+          </LocalCard>
+        </Card>
+      </Form>
     </ResultContainer>
   );
 };
