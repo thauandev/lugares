@@ -20,15 +20,17 @@ import {
 } from './styles';
 
 interface ModalProps {
+  id: string;
   flag: string;
   country: string;
   local: string;
   date: string;
-  toDelete: Function;
-  toEdit: Function;
+  toDelete: (id: string) => void;
+  toEdit: (data: any, i: any) => void;
 }
 
 const MetaItem: React.FC<ModalProps> = ({
+  id,
   flag,
   country,
   local,
@@ -76,7 +78,7 @@ const MetaItem: React.FC<ModalProps> = ({
                 </button>
               </Modal>
 
-              <button type="button" onClick={toDelete}>
+              <button type="button" onClick={() => toDelete(id)}>
                 <img src={Delete} alt="" />
               </button>
             </EditCard>

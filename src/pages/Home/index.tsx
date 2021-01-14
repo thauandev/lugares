@@ -119,12 +119,13 @@ const Home: React.FC = () => {
       </Form>
       {meta.map(m => (
         <MetaItem
+          id={m.id}
           flag={m.flag}
           country={m.country}
           local={m.local}
           date={m.date}
-          toDelete={handleDelete(m.id)}
-          toEdit={(event: any) => handleEdit(event, m.id)}
+          toDelete={handleDelete}
+          toEdit={handleEdit}
         />
       ))}
     </Container>
