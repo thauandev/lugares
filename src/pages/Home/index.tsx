@@ -8,25 +8,11 @@ import { uuid } from 'uuidv4';
 import Select from '../../components/Select';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
-import Modal from '../../components/Modal';
+import MetaItem from '../../components/MetaItem';
 
 import api from '../../services/api';
 
-import Edit from '../../assets/edit.svg';
-import Delete from '../../assets/delete.svg';
-
-import {
-  Container,
-  InputContainer,
-  Button,
-  ResultContainer,
-  Card,
-  ContainerCard,
-  FlagCard,
-  EditCard,
-  LocalCard,
-  InfoCard,
-} from './styles';
+import { Container, InputContainer, Button } from './styles';
 
 interface Countries {
   value: string;
@@ -152,58 +138,19 @@ const Home: React.FC = () => {
         </InputContainer>
       </Form>
 
-      <ResultContainer>
+      <Form onSubmit={event => handleEdit(event, m.id)} key={m.id}>
         {meta.map(m => (
-          <Card key={m.id}>
-            <ContainerCard>
-              <FlagCard>
-                <img src={m.flag} alt="Bandeira" />
-
-                <p>{m.country}</p>
-              </FlagCard>
-              <EditCard>
-                <button type="button" onClick={openModal}>
-                  <img src={Edit} alt="" />
-                </button>
-                <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-                  {meta.map(m => (
-                    <Form
-                      onSubmit={event => handleEdit(event, m.id)}
-                      key={m.id}
-                    >
-                      <Input
-                        name="local"
-                        placeholder="   Digite o local que deseja conhecer"
-                      />
-                      <Input name="date" placeholder="   mês/ano" />
-
-                      <Button type="submit">
-                        <span>Editar</span>
-                      </Button>
-                    </Form>
-                  ))}
-                  <button onClick={closeModal}>Fechar</button>
-                </Modal>
-
-                <button type="button" onClick={() => handleDelete(m.id)}>
-                  <img src={Delete} alt="" />
-                </button>
-              </EditCard>
-            </ContainerCard>
-
-            <LocalCard>
-              <hr />
-              <InfoCard>
-                <p>{`Local: ${m.local}`}</p>
-                <p>
-                  {`Meta:
-                  ${m.date}`}
-                </p>
-              </InfoCard>
-            </LocalCard>
-          </Card>
+          <MetaItem
+            isOpen={modalIsOpen}
+            openModal={openModal}
+            onRequestClose={closeModal}
+            flag={m.flag}
+            country={m.country}
+            local={m.local}
+            date={m.date}
+          />
         ))}
-      </ResultContainer>
+      </Form>
     </Container>
   );
 };
