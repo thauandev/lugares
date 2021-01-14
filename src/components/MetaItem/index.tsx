@@ -50,18 +50,18 @@ const MetaItem: React.FC<ModalProps> = ({
 
   return (
     <ResultContainer>
-      <Form onSubmit={toEdit}>
-        <Card>
-          <ContainerCard>
-            <FlagCard>
-              <img src={flag} alt="Bandeira" />
+      <Card>
+        <ContainerCard>
+          <FlagCard>
+            <img src={flag} alt="Bandeira" />
 
-              <p>{country}</p>
-            </FlagCard>
-            <EditCard>
-              <button type="button" onClick={openModal}>
-                <img src={Edit} alt="Edição" />
-              </button>
+            <p>{country}</p>
+          </FlagCard>
+          <EditCard>
+            <button type="button" onClick={openModal}>
+              <img src={Edit} alt="Edição" />
+            </button>
+            <Form onSubmit={data => toEdit(data, id)}>
               <Modal isOpen={modalIsOpen}>
                 <Input
                   name="local"
@@ -77,25 +77,25 @@ const MetaItem: React.FC<ModalProps> = ({
                   Fechar
                 </button>
               </Modal>
+            </Form>
 
-              <button type="button" onClick={() => toDelete(id)}>
-                <img src={Delete} alt="" />
-              </button>
-            </EditCard>
-          </ContainerCard>
+            <button type="button" onClick={() => toDelete(id)}>
+              <img src={Delete} alt="" />
+            </button>
+          </EditCard>
+        </ContainerCard>
 
-          <LocalCard>
-            <hr />
-            <InfoCard>
-              <p>{`Local: ${local}`}</p>
-              <p>
-                {`Meta:
+        <LocalCard>
+          <hr />
+          <InfoCard>
+            <p>{`Local: ${local}`}</p>
+            <p>
+              {`Meta:
             ${date}`}
-              </p>
-            </InfoCard>
-          </LocalCard>
-        </Card>
-      </Form>
+            </p>
+          </InfoCard>
+        </LocalCard>
+      </Card>
     </ResultContainer>
   );
 };

@@ -119,6 +119,7 @@ const Home: React.FC = () => {
       </Form>
       {meta.map(m => (
         <MetaItem
+          key={m.id}
           id={m.id}
           flag={m.flag}
           country={m.country}
